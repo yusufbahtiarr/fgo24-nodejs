@@ -1,50 +1,51 @@
-const url =
-  "https://gist.githubusercontent.com/fulsep/58daee79a699d0fe143da36bbc47e3d6/raw/dcc2e9c970af553011ba6d2d13331e68f5cf42ff/lagu.json";
 const fs = require("fs/promises");
 const path = require("path");
 
-async function createFile(fileName) {
+// memindahkan file
+const moveFile = async (data, destination) => {
   try {
-    const content = "";
-    await fs.writeFile(fileName, content);
-    console.log(" file success");
-  } catch (err) {
+    await fs.rename(data, destination)
+  } 
+  catch (err) {
     console.log(err);
   }
 }
+// membuat folder
 const createFolder = async (folderName) => {
-    try {
-    await fs.mkdir(folderName, {recursive: true}) 
-    } catch (err) {
-        console.log(err);
+    try { 
+        await fs.mkdir(`./music/${folderName}`)
+    } 
+    catch (err) {
+      if (err.code === 'EEXIST') {
+        console.log(`Folder ${folderName} sudah ada`)
+      } else {
+          console.log('Error membuat folder')
       }
+    }
 }
-const fetchSong = async () => {
+// check folder
+const checkFolder = async (folder) => {
   try {
-    const result = await fetch(url);
-    const res = await result.json();
-    let arr = []
-    let artistName = []
-    res.forEach((item) => {
-      const [ _, artis ] = item.split(" - ")  
-      artistName.push(artis)
-      const result = item.split(" - ").reverse().join(" - ");
-      arr.push(result);
-    });
-    // console.log(arr);
-    // console.log(artistName);
-    
-    artistName.forEach((folder)=> {
-        createFolder(`${folder}`)
-    })
-    
-    arr.forEach((songs) => {
-        const [artis,_] = songs.split(" - ") 
-      createFile(path.join(`${artis}`, `${songs}.mp3`));
-    });
-    console.log(arr);
+      await fs.access(`music/${folder}`)
+      console.log(`Folder ${folder} sudah ada`)
+  } catch {
+      await createFolder(folder)
+  }
+}
+
+const mainProject = async () => {
+  try {
+    const listSongFiles = (await fs.readdir('music')).filter(item => item.endsWith('.mp3'))
+    // console.log(listSongFiles) // list file mp3 di folder music
+        for (let file of listSongFiles) {
+            let folderName = file.substring(0,file.indexOf(' -'))
+            await checkFolder(folderName)
+            await moveFile(`music/${file}`, `music/${folderName}/${file}`)
+        }
   } catch (err) {
     console.log(err);
   }
 };
-fetchSong();
+
+mainProject();
+
