@@ -4,6 +4,7 @@ const url = "https://gist.githubusercontent.com/fulsep/58daee79a699d0fe143da36bb
 fetch(url)
 .then(res => res.json())
 .then(data=> {
+    // versi 1
     let result = []
     for(let i = 0; i < data.length; i++){
         let index = data[i].indexOf(" - ")
@@ -13,5 +14,12 @@ fetch(url)
         result = [...result, titleArtist]
     }
     console.log(result);
+
+    //versi 2
+    const song = data.map(item => {
+        const[title, artist] = item.split(" - ")
+        return `${artist} - ${title}`
+    })
+    console.log(song);
 })
 
