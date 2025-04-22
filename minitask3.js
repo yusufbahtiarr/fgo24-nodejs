@@ -1,34 +1,3 @@
-// const fs = require('fs').promises
-
-// const arr = [
-//     'My Cahemical Romance - Teenager',
-//     'My Cahemical Romance - Welcome to the Black Parade',
-//     'My Cahemical Romance - Helena',
-//     'Paramore - Misery Business',
-//     'Paramore - Ignorance',
-//     'Paramore - Decode',
-//     'Paramore - The Only Exception',
-//     'Linkin Park - Numb',
-//     'Linkin Park - In The End',
-//     'Linkin Park - Burn It Down'
-// ]
-// const 
-
-// const main = async()=> {
-//     const listFiles = await fs.readdir('music')
-//     arr.forEach(file => {
-//         if(listFiles.includes(`${file}.mp3`)){
-//             console.log(`${file} sudah ada`);
-//     }else{
-//         // proses untuk membuat file
-//         console.log(`Berhasil membuat file ${file}`);
-//     }
-//     })
-//     console.log(listFiles);
-// }
-// main()
-
-
 const url =
   "https://gist.githubusercontent.com/fulsep/58daee79a699d0fe143da36bbc47e3d6/raw/dcc2e9c970af553011ba6d2d13331e68f5cf42ff/lagu.json";
 const fs = require("fs/promises");
